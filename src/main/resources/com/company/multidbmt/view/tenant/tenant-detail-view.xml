@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://tenantDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="tenantDc"
+                  class="com.company.multidbmt.entity.Tenant">
+            <fetchPlan extends="_base">
+                <property name="users" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="userDc" property="users"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="tenantDc">
+            <textField id="nameField" property="name"/>
+            <textField id="dbHostField" property="dbHost"/>
+            <textField id="dbPortField" property="dbPort"/>
+            <textField id="dbNameField" property="dbName"/>
+            <textField id="dbUserField" property="dbUser"/>
+            <passwordField id="dbPasswordField" property="dbPassword"/>
+            <checkbox id="dbCreatedField" property="dbCreated" readOnly="true"/>
+            <span colspan="2">
+                <hbox id="buttonsPanel" classNames="buttons-panel">
+                    <button id="addBtn" action="usersGrid.add"/>
+                    <button id="removeBtn" action="usersGrid.exclude"/>
+                </hbox>
+                <dataGrid id="usersGrid" dataContainer="userDc">
+                    <actions>
+                        <action id="add" type="list_add"/>
+                        <action id="exclude" type="list_exclude"/>
+                    </actions>
+                    <columns>
+                        <column property="username"/>
+                    </columns>
+                </dataGrid>
+            </span>
+
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

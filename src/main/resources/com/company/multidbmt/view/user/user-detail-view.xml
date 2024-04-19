@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://UserDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="userDc"
+                  class="com.company.multidbmt.entity.User">
+            <fetchPlan extends="_base">
+                <property name="tenants" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader/>
+            <collection id="tenantsDc" property="tenants"/>
+        </instance>
+    </data>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+        <formLayout id="form" dataContainer="userDc">
+            <textField id="usernameField" property="username" readOnly="true"/>
+            <passwordField id="passwordField"
+                           label="msg://com.company.multidbmt.entity/User.password"
+                           required="true"
+                           visible="false"/>
+            <passwordField id="confirmPasswordField"
+                           label="msg://confirmPassword"
+                           required="true"
+                           visible="false"/>
+            <textField id="firstNameField" property="firstName"/>
+            <textField id="lastNameField" property="lastName"/>
+            <textField id="emailField" property="email"/>
+            <comboBox id="timeZoneField" property="timeZoneId"/>
+            <checkbox id="activeField" property="active"/>
+            <span colspan="2">
+                <hbox id="buttonsPanel" classNames="buttons-panel">
+                    <button id="addBtn" action="tenantsGrid.add"/>
+                    <button id="removeBtn" action="tenantsGrid.exclude"/>
+                </hbox>
+                <dataGrid id="tenantsGrid" dataContainer="tenantsDc">
+                    <actions>
+                        <action id="add" type="list_add"/>
+                        <action id="exclude" type="list_exclude"/>
+                    </actions>
+                    <columns>
+                        <column property="name"/>
+                        <column property="dbName"/>
+                        <column property="dbHost"/>
+                        <column property="dbUser"/>
+                        <column property="dbPort"/>
+                    </columns>
+                </dataGrid>
+            </span>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

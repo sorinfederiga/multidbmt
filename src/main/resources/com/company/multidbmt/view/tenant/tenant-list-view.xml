@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://tenantListView.title"
+      focusComponent="tenantsDataGrid">
+    <data>
+        <collection id="tenantsDc"
+                    class="com.company.multidbmt.entity.Tenant">
+            <fetchPlan extends="_base"/>
+            <loader id="tenantsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Tenant e order by e.name]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="tenantsDataGrid.create"/>
+            <button id="readBtn" action="tenantsDataGrid.read"/>
+            <button id="removeBtn" action="tenantsDataGrid.remove"/>
+            <button action="tenantsDataGrid.createDb"/>
+            <button action="tenantsDataGrid.dropDb"/>
+            <simplePagination id="pagination" dataLoader="tenantsDl"/>
+        </hbox>
+        <dataGrid id="tenantsDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="tenantsDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="read" type="list_read"/>
+                <action id="remove" type="list_remove"/>
+                <action id="createDb" type="list_itemTracking" text="Create database"/>
+                <action id="dropDb" type="list_itemTracking" text="Drop database"/>
+            </actions>
+            <columns resizable="true">
+                <column property="name"/>
+                <column property="dbHost"/>
+                <column property="dbPort"/>
+                <column property="dbName"/>
+                <column property="dbCreated"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
